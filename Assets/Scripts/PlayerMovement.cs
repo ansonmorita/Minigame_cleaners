@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,12 +18,28 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     { 
-        if (Input.GetButtonDown("Jump")) {rb.velocity = new Vector3(rb.velocity.x, jumpForce, 0);}
+        if (Input.GetButtonDown("Jump")) {Jump();}
 
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
 
         rb.velocity = new Vector3(horizontalInput * movementSpeed, rb.velocity.y, verticalInput * movementSpeed);
     }
+
+    void Jump()
+    {
+        rb.velocity = new Vector3(rb.velocity.x, jumpForce, 0);
+    }
+    
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy head"))
+        {
+            Destroy(collision.transform.parent.gameObject);
+            Jump();
+            // ---ADD 1 point---
+        }
+    }
+    
     
 }
