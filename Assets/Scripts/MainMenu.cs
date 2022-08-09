@@ -14,10 +14,16 @@ public class MainMenu : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.anyKeyDown)
+        if (Input.anyKeyDown && !(Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1) || Input.GetMouseButtonDown(2)))
         {
             SceneManager.LoadScene("Scenes/Select_menu");
         }
+
     }
     
+    public void quit()
+    {
+        Application.Quit();
+    }
+
 }
