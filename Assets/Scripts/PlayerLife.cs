@@ -1,11 +1,23 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerLife : MonoBehaviour
 {
     int collisionCounter = 0;
     
+    int life = 3;
+    [SerializeField] Text lifeTxt;
+    public TextMeshProUGUI diedTxt;
+    
+    void Start()
+    {
+        diedTxt.enabled = false;
+    }
+
     private void OnCollisionEnter(Collision collision)
     {   
         if (collision.gameObject.CompareTag("Enemy tag"))
@@ -16,11 +28,15 @@ public class PlayerLife : MonoBehaviour
             if (collisionCounter == 3)
             {
                 Die();
+                life = 0;
+                lifeTxt.text = life.ToString();
             }
             else
             {
-                // 血量减少，播放受到攻击的音效
-                Debug.Log("attacked!!!");
+                // -1 life
+                //Debug.Log("attacked!!!");
+                life--;
+                lifeTxt.text = life.ToString();
             }
             
         }
@@ -32,5 +48,9 @@ public class PlayerLife : MonoBehaviour
         GetComponent<Rigidbody>().isKinematic = true;
         GetComponent<PlayerMovement>().enabled = false;
         
+        //Died scene
+        Time.timeScale = 0f;
+        diedTxt.enabled = true;
+
     }
 }

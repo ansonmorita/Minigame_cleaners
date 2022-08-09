@@ -2,12 +2,17 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
     Rigidbody rb;
     [SerializeField] float movementSpeed = 5f;
     [SerializeField] float jumpForce = 4f;
+
+    public static int score = 0;
+    [SerializeField] Text scoreTxt;
+    
     
     // Start is called before the first frame update
     void Start()
@@ -31,13 +36,17 @@ public class PlayerMovement : MonoBehaviour
         rb.velocity = new Vector3(rb.velocity.x, jumpForce, 0);
     }
     
+    
+    // Kill enemies
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Enemy head"))
         {
             Destroy(collision.transform.parent.gameObject);
             Jump();
-            // ---ADD 1 point---
+            // ADD 1 point
+            score++;
+            scoreTxt.text = score.ToString();
         }
     }
     

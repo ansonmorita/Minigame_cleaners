@@ -3,50 +3,38 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
-public class PauseMenu : MonoBehaviour
+public class EndMenu : MonoBehaviour
 {
-    public static bool IsPaused = false;
-    public GameObject pauseMenuUI;
+    public GameObject endMenuUI;
 
+    [SerializeField] Text scoreTxt;
     void Start()
     {
-        pauseMenuUI.SetActive(false);
+        scoreTxt.text = PlayerMovement.score.ToString();
     }
 
-    // Update is called once per frame
-    void Update()
+   
+    private void OnTriggerEnter(Collider other)
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (other.CompareTag("Player"))
         {
-            if (IsPaused)
-            {
-                Resume();
-            }
-            else
-            {
-                Pause();
-            }
+            // Debug.Log("finish!!");
+            Time.timeScale = 0f;
+            //endMenuUI.SetActive(true);
         }
     }
-
+  
+    
     // replay the game
     void Resume()
     {
-        pauseMenuUI.SetActive(false);
+        endMenuUI.SetActive(false);
         Time.timeScale = 1f;
-        IsPaused = false;
     }
     
-    // Pause the game
-    void Pause()
-    {
-        pauseMenuUI.SetActive(true);
-        Time.timeScale = 0f;
-        IsPaused = true;
-    }
-
-    
+   
     // buttons
     public void back2main()
     {
@@ -54,10 +42,6 @@ public class PauseMenu : MonoBehaviour
         SceneManager.LoadScene("Scenes/main_menu");
     }
     
-    public void play()
-    {
-        Resume();
-    }
     
     public void reload()
     {
